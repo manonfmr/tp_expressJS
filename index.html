@@ -7,8 +7,25 @@
     <body>
         <h1 class="titre">Liste annonce</h1>
         <h2 class="titre">Bienvenue {{login}}</h2>
+
+        <h3>Sélectionnez votre annonce préféré :</h2>
+
+            <select id="annonce" name="fruits">
+                <option value="Musique">Nouveau programme de musique</option>
+                <option value="Sport">Nouveau programme de sport</option>
+                <option value="Animaux">Nouvelle offre de chiens</option>
+                <option value="Lecture">Nouveaux livre</option>
+                <option value="Bar">Nouveaux concert</option>
+            </select>
+
         <form class="form" action="/logout" method="GET">
             <button class="submit" type="submit">Déconnexion</button>
         </form>
+
+        <script>
+            document.getElementById("annonce").addEventListener("change", function() {
+                document.cookie = "selected_annonce=" + this.value;
+            });
+        </script>
     </body>
 </html>

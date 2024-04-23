@@ -6,7 +6,9 @@ const path = require('path');
 let mysql = require('mysql');
 let sessions = require('express-session');
 let fileSystem = require('fs');
+let cookieParser = require("cookie-parser");
 
+app.use(cookieParser());
 let baseDeDonnee = mysql.createConnection({
     host:'localhost',
     user: 'root',
@@ -69,6 +71,8 @@ app.use((err, req, res, next) => {
     console.error("Erreur :", err);
     res.status(500).send("Une erreur est survenue.");
 });
+
+//get cookies 
 
 app.listen(8080, function(){
     console.log("ecoute sur le port 8080");
