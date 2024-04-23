@@ -25,32 +25,20 @@ app.use(sessions({
 
 app.use(express.urlencoded({extended: true}));
 
-baseDeDonnee.connect(function(err){
-    if (err) {
-        console.error("Erreur connexion base de donnée")
-        return;
-    }
+baseDeDonnee.connect(function(err, next){
+    if (err) next(err);
     app.get('/index.html', function(req, res){
-        
         let login = req.query.login;
         let sql = 'SELECT * FROM personne where login = ? ;';
         baseDeDonnee.query(sql, [login], function(err, resultat){
-            if (err) {
-                console.error("Erreur lors de l'exécution de la requête SQL :", err);
-                res.status(500).send("Erreur lors de l'exécution de la requête SQL.");
-                return;
-            }
+            if (err) next(err);
             if (resultat.length === 0){
                 res.redirect('/connexion.html');
             }
             else{
                 req.session.login = login;
                 fileSystem.readFile(__dirname + '/index.html', 'utf8', function(err, data) {
-                    if (err) {
-                        console.error("Erreur lors de la lecture du fichier index.html :", err);
-                        res.status(500).send("Erreur lors de la lecture du fichier index.html.");
-                        return;
-                    }
+                    if (err) next(err);
                     data = data.replace('{{login}}', login);
                     res.send(data);
                 });
@@ -61,7 +49,6 @@ baseDeDonnee.connect(function(err){
 });
 
 app.get('/connexion.html', function(req, res){
-    console.log (req.session.login)
     res.sendFile(__dirname+'/connexion.html');
 })
 
@@ -71,19 +58,17 @@ app.get('/', function(req, res){
     res.sendFile(__dirname+'/connexion.html');
 })
 
-// Route pour la déconnexion
 app.get('/logout', function(req, res){
     req.session.destroy(function(err) {
-        if (err) {
-            console.error("Erreur lors de la déconnexion :", err);
-            res.status(500).send("Erreur lors de la déconnexion.");
-            return;
-        }
+        if (err) next(err);
         res.redirect('/connexion.html');
     });
 });
 
-
+app.use((err, req, res, next) => {
+    console.error("Erreur :", err);
+    res.status(500).send("Une erreur est survenue.");
+});
 
 app.listen(8080, function(){
     console.log("ecoute sur le port 8080");
