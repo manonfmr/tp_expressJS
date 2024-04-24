@@ -1,16 +1,16 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
 }
 
 .container {
-    width: 50%;
-    margin: 100px auto;
-    background-color: #fff;
+    max-width: 400px;
+    margin: 50px auto;
     padding: 20px;
-    border-radius: 10px;
+    background-color: #fff;
+    border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -28,7 +28,7 @@ body {
     margin-bottom: 5px;
 }
 
-.input{
+.input {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -51,14 +51,74 @@ body {
     background-color: #0056b3;
 }
 
-.link {
-    display: block;
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.titre {
     text-align: center;
+    color: #333;
+}
+
+.annonces {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+}
+
+.annonce {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.annonce-info {
+    flex-grow: 1;
+}
+
+.annonce-title {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.annonce-image {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.form {
     margin-top: 20px;
-    color: #007bff;
-    text-decoration: none;
+}
+
+.submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit:hover {
+    background-color: #0056b3;
+}
+
+.link {
+    color: #007bff; 
+    text-decoration: none; 
+    transition: color 0.3s ease; 
 }
 
 .link:hover {
-    text-decoration: underline;
+    color: #0056b3; 
+    text-decoration: underline; 
 }
