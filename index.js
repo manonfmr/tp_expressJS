@@ -30,8 +30,9 @@ app.use(express.urlencoded({extended: true}));
 
 baseDeDonnee.connect(function(err, next){
     if (err) next(err);
-    app.get('/index.html', function(req, res){
-        let login = req.query.login;
+    app.post('/index.html', function(req, res){
+        if(err) console.log("erreur");
+        let login = req.body.login;
         let sql = 'SELECT * FROM personne where login = ? ;';
         baseDeDonnee.query(sql, [login], function(err, resultat){
             if (err) next(err);
