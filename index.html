@@ -4,28 +4,37 @@
         <title>Annonce</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
-    <body>
+    <body ng-app="">
         <h1 class="titre">Liste annonce</h1>
         <h2 class="titre">Bienvenue {{login}}</h2>
 
-        <h3>Sélectionnez votre annonce préféré :</h2>
+        <img src={{imgAnnonce}} alt="annonce en image">
+
+
+        <h3>Sélectionnez une annonce :</h2>
 
             <select id="annonce" name="fruits">
-                <option value="Musique">Nouveau programme de musique</option>
-                <option value="Sport">Nouveau programme de sport</option>
-                <option value="Animaux">Nouvelle offre de chiens</option>
-                <option value="Lecture">Nouveaux livre</option>
-                <option value="Bar">Nouveaux concert</option>
+                <option value="musique">Nouveau programme de musique</option>
+                <option value="sport">Nouveau programme de sport</option>
+                <option value="animaux">Salon du chiot</option>
+                <option value="lecture">Nouveaux livres</option>
+                <option value="concert">Nouveaux concerts</option>
             </select>
+            <button id="afficher">Afficher</button>  
+            
+            <script>
+                document.getElementById("afficher").addEventListener("click", function() {
+                    var selectedValue = document.getElementById("annonce").value;
+                    document.cookie = "selected_annonce=" + selectedValue;
+                    res.cookie("selected_annonce", selectedValue);
+                    
+                });
+            </script>
 
         <form class="form" action="/logout" method="GET">
             <button class="submit" type="submit">Déconnexion</button>
         </form>
 
-        <script>
-            document.getElementById("annonce").addEventListener("change", function() {
-                document.cookie = "selected_annonce=" + this.value;
-            });
-        </script>
+        <a class="link" href='Apropos.html'>A propos</a>
     </body>
 </html>

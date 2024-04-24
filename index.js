@@ -9,6 +9,7 @@ let fileSystem = require('fs');
 let cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
+
 let baseDeDonnee = mysql.createConnection({
     host:'localhost',
     user: 'root',
@@ -42,10 +43,13 @@ baseDeDonnee.connect(function(err, next){
                 fileSystem.readFile(__dirname + '/index.html', 'utf8', function(err, data) {
                     if (err) next(err);
                     data = data.replace('{{login}}', login);
+                    data = data.replace('{{annonce}}', req.cookies.selected_annonce);
+                    data = data.replace('{{imgAnnonce}}', req.cookies.selected_annonce + ".png");
                     res.send(data);
                 });
             }
         });
+        
        
     })
 });
@@ -55,6 +59,7 @@ app.get('/connexion.html', function(req, res){
 })
 
 app.use(express.static(path.join(__dirname, '/asset')));
+app.use(express.static(path.join(__dirname, '/asset/img')));
 
 app.get('/', function(req, res){
     res.sendFile(__dirname+'/connexion.html');
@@ -71,8 +76,6 @@ app.use((err, req, res, next) => {
     console.error("Erreur :", err);
     res.status(500).send("Une erreur est survenue.");
 });
-
-//get cookies 
 
 app.listen(8080, function(){
     console.log("ecoute sur le port 8080");
