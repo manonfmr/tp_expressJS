@@ -4,25 +4,24 @@
         <title>A propos</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-</head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.js"></script>
     </head>
     <body ng-app="myApp" ng-controller="myCtrl">
-        <h1 class="titre">A propos</h1>
-        <div>{{firstname + " " + lastname}}</div>
-        <div>{{personne.nom + " " + personne.prenom}}</div>
-        <h2 class="titre"> Annonce dipsonible :</h2>
-        <ul ng-init="mesAnnonces=['muisque', 'sport', 'concert', 'lecture']">
-            <li ng-repeat="x in mesAnnonces">{{x}}</li>
-        </ul>
-        <A class="link" href='connexion.html'> Connexion</A>
 
+        <div class="container">
+            <h1 class="titre"> Annonce de {{selectedAnnonce}}</h1>
+            <div class="annonce-info">
+                <h2 class="annonce-info">{{selectedAnnonce}}</h2>
+                <img src="{{selectedAnnonce + '.png'}}" class="annonce-image" alt="Image de l'annonce {{selectedAnnonce}}">
+            </div>
+        </div>
+        
         <script>
-            var app = angular.module("myApp", []);
-            app.controller("myCtrl", function($scope){
-                $scope.firstname = "Manon"
-                $scope.lastname = "Famery"
-                $scope.personne={nom: "Famery", prenom: "Manon"}
+            var app = angular.module("myApp", ["ngCookies"]);
+            app.controller("myCtrl", function($scope, $cookies){
+                $scope.selectedAnnonce = $cookies.get('selected_annonce');
             })
         </script>
     </body>
 </html> 
+

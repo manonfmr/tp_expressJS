@@ -122,3 +122,8 @@ body {
     color: #0056b3; 
     text-decoration: underline; 
 }
+
+.titre_session{
+    text-align: left;
+    color: #333;
+}

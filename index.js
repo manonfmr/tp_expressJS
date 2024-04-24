@@ -43,14 +43,10 @@ baseDeDonnee.connect(function(err, next){
                 fileSystem.readFile(__dirname + '/index.html', 'utf8', function(err, data) {
                     if (err) next(err);
                     data = data.replace('{{login}}', login);
-                    data = data.replace('{{annonce}}', req.cookies.selected_annonce);
-                    data = data.replace('{{imgAnnonce}}', req.cookies.selected_annonce + ".png");
                     res.send(data);
                 });
             }
-        });
-        
-       
+        });       
     })
 });
 

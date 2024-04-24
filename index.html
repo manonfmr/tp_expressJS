@@ -8,42 +8,45 @@
 </head>
 <body ng-app="myApp" ng-controller="myCtrl">
     <div class="container">
+        <h3 class="titre_session">{{login}}</h3>
         <h1 class="titre">Liste des annonces</h1>
         <div class="annonces">
             <div ng-repeat="x in mesAnnonces" class="annonce">
-                <div class="annonce-info">
-                    <h2 class="annonce-title">{{x}}</h2>
-                    <my-annonce label="A propos" on-click="onClick({selectedValue: x})"></my-annonce>
-                </div>
-                <img ng-src="{{x + '.png'}}" class="annonce-image" alt="annonce en image">
+                <my-annonce label="A propos" on-click="onClickfunction(selectedValue)" x="x"></my-annonce>
             </div>
         </div>
         <form class="form" action="/logout" method="GET">
             <button class="submit" type="submit">Déconnexion</button>
         </form>
     </div>
-
     <script>
         var app = angular.module("myApp", ["ngCookies"]);
-
+        
         app.controller("myCtrl", function($scope, $cookies){
             $scope.mesAnnonces=['musique', 'sport', 'concert', 'lecture'];
             $scope.onClickfunction = function(selectedValue){
-                document.cookie = "selected_annonce=" + selectedValue;
                 $cookies.put("selected_annonce", selectedValue);
-            }
+            };
         });
 
         app.directive('myAnnonce', function(){
             return {
                 restrict: 'E',
-                template: '<a class="link" ng-click="onClick({selectedValue: x})"href="Apropos.html">{{label}}</a>',
+                template: `
+                    <div class="annonce-info">
+                        <h2 class="annonce-title">{{ x }}</h2>
+                        <img ng-src="{{ x + '.png' }}" class="annonce-image" alt="Image de l'annonce {{x}}">
+                    </div>
+                    <a class="link" ng-click="onClick({ selectedValue: x })" href="Apropos.html">{{ label }}</a>
+                `,
                 scope: {
                     label: '@',
-                    onClick: '&'
+                    onClick: '&',
+                    x: '=' 
                 }
             };
         });
+
     </script>
 </body>
 </html>
