@@ -3,9 +3,15 @@
     <head>
         <title>A propos</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
     </head>
-    <body>
+    <body ng-app="">
         <h1 class="titre">A propos</h1>
+        <h2 class="titre"> Annonce dipsonible :</h2>
+        <ul ng-init="mesAnnonces=['muisque', 'sport', 'concert', 'lecture']">
+            <li ng-repeat="x in mesAnnonces">{{x}}</li>
+        </ul>
         <A class="link" href='connexion.html'> Connexion</A>
     </body>
 </html> 
