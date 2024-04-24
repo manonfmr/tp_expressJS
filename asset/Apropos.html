@@ -6,12 +6,23 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 </head>
     </head>
-    <body ng-app="">
+    <body ng-app="myApp" ng-controller="myCtrl">
         <h1 class="titre">A propos</h1>
+        <div>{{firstname + " " + lastname}}</div>
+        <div>{{personne.nom + " " + personne.prenom}}</div>
         <h2 class="titre"> Annonce dipsonible :</h2>
         <ul ng-init="mesAnnonces=['muisque', 'sport', 'concert', 'lecture']">
             <li ng-repeat="x in mesAnnonces">{{x}}</li>
         </ul>
         <A class="link" href='connexion.html'> Connexion</A>
+
+        <script>
+            var app = angular.module("myApp", []);
+            app.controller("myCtrl", function($scope){
+                $scope.firstname = "Manon"
+                $scope.lastname = "Famery"
+                $scope.personne={nom: "Famery", prenom: "Manon"}
+            })
+        </script>
     </body>
 </html> 
