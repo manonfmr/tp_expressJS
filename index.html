@@ -11,12 +11,14 @@
         <h3 class="titre_session">{{login}}</h3>
         <h1 class="titre">Liste des annonces</h1>
 
-        <button type="button" onclick="loadAnnonce()">Voir les annonces</button>
+        <button type="button" ng-click="loadAnnonce()">Voir les annonces</button>
 
-        <div id="annonce" class="annonces">
+      
+        <div id="annonces-container" class="annonces">
             <div ng-repeat="monAnnonce in mesAnnonces" class="annonce">
-                <my-annonce label="A propos" on-click="onClickfunction(selectedValueNom)" mon-annonce="monAnnonce"></my-annonce>
+                <my-annonce label="A propos" on-click="onClickfunction(selectedValueNom)" mon-annonce-nom="monAnnonce.nom" mon-annonce-lieu="monAnnonce.lieu" mon-annonce-description="monAnnonce.description" mon-annonce-url="monAnnonce.url_img"></my-annonce>
             </div>
+
         </div>
 
         <form class="form" action="/logout" method="GET">
@@ -24,56 +26,68 @@
         </form>
     </div>
     
+    
     <script>
-        
-        function loadAnnonce() {
-            const xhttp = new XMLHttpRequest();
-            const loginValue = document.getElementById('annonce').value;
-
-            xhttp.onload = function() {
-                const response = JSON.parse(this.responseText);
-                if (response.success) {
-                    console.log('ok');
-                } else {
-                    console.log('ko');
-                }
-            };
-
-            xhttp.open("POST", "./ajaxAnnonce.html", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  
-            xhttp.send();
-        }
-
         var app = angular.module("myApp", ["ngCookies"]);
         
         app.controller("myCtrl", function($scope, $cookies){
-            
             const login = localStorage.getItem('login');
-            // Utiliser la valeur du login comme nécessaire
-            console.log('Login:', login);
             $scope.login = login;
+            $scope.mesAnnonces = []; 
 
-            $scope.mesAnnonces=['musique', 'sport', 'concert', 'lecture'];
             $scope.onClickfunction = function(selectedValueNom){
                 $cookies.put("selected_annonce", selectedValueNom);
             };
-        });
 
+            $scope.loadAnnonce = function() {
+                const xhttp = new XMLHttpRequest();
+
+                xhttp.onload = function() {
+                    const response = JSON.parse(this.responseText);
+                    if (response.success) {
+                        const tabAnnonces = response.tabMesAnnonces;
+                        for (let i = 0; i < tabAnnonces.length; i++) {
+                            $scope.mesAnnonces.push({ nom: tabAnnonces[i].nom, lieu: tabAnnonces[i].lieu, description: tabAnnonces[i].description, url_img: tabAnnonces[i].url_img });
+                        }
+                    } else {
+                        console.log('Erreur lors du chargement des annonces');
+                    }
+                    
+                };
+
+                xhttp.open("POST", "./ajaxAnnonce.html", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send();
+            };
+            
+            $scope.loadAnnonce();
+        });
 
         app.directive('myAnnonce', function(){
             return {
                 restrict: 'E',
                 template: `
                     <div class="annonce-info">
-                        <h2 class="annonce-title">{{ monAnnonce }}</h2>
-                        <img ng-src="{{ monAnnonce + '.png' }}" class="annonce-image" alt="Image de l'annonce {{monAnnonce}}">
+                        <h2 class="annonce-title">{{ monAnnonceNom }}</h2>
+                        <div class="container-info">
+                            <h3 class="label-info">Lieux :</h3>
+                            <label class="info" for="lieu">{{monAnnonceLieu}}</label>
+                        </div>
+                        <div class="container-info">
+                            <h3 class="label-info">Description :</h3>
+                            <div class="info" for="description">{{monAnnonceDescription}}</div>
+                        </div>
+                        <img ng-src="{{ monAnnonceUrl }}" class="annonce-image" alt="Image de l'annonce {{monAnnonceNom}}">
                     </div>
-                    <a class="link" ng-click="onClick({ selectedValueNom: monAnnonce })" href="Apropos.html">{{ label }}</a>
+                    <a class="link" ng-click="onClick({ selectedValueNom: monAnnonceNom })" href="Apropos.html">{{ label }}</a>
                 `,
                 scope: {
                     label: '@',
                     onClick: '&',
-                    monAnnonce: '=' 
+                    monAnnonceNom: '=',
+                    monAnnonceLieu: '=',
+                    monAnnonceDescription: '=',
+                    monAnnonceUrl: '='
                 }
             };
         });

@@ -32,7 +32,6 @@ baseDeDonnee.connect(function(err, next) {
     if (err) next(err);
 
     app.post('/ajaxSession.html', function(req, res) {
-        console.log("ajaxSession")
         let login = req.body.login;
         if (login) {
             let sql = 'SELECT * FROM personne where login = ? ;';
@@ -49,25 +48,18 @@ baseDeDonnee.connect(function(err, next) {
     });
 
     app.post('/ajaxAnnonce.html', function(req, res) {
-        console.log("ajaxAnnonce")
         if (err) console.log("erreur ajaxAnnonce.html");
         let sql = 'SELECT * FROM annonce';
-        let tabAnnonceNom = [];
-        let tabAnnonceLieu = [];
-        let tabAnnonceDescription = [];
+        let tabMesAnnonces = [];
         baseDeDonnee.query(sql, function(err, resultat) {
-            console.log("bd annonce ")
             if (err) next(err);
             if (resultat.length === 0) {
-                console.log("erreur donnée ")
                 res.json({ success: false });
             } else {
                 for (let i = 0; i < resultat.length; i++) {
-                    tabAnnonceNom.push(resultat[i].nom);
-                    tabAnnonceLieu.push(resultat[i].lieu);
-                    tabAnnonceDescription.push(resultat[i].description);
+                    tabMesAnnonces.push({ nom: resultat[i].nom, lieu: resultat[i].lieu, description: resultat[i].description, url_img: resultat[i].url_img });
                 }
-                res.json({ success: true, tabAnnonceNom: tabAnnonceNom, tabAnnonceLieu: tabAnnonceLieu, tabAnnonceDescription: tabAnnonceDescription });
+                res.json({ success: true, tabMesAnnonces: tabMesAnnonces});
             }
 
         });

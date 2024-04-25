@@ -65,7 +65,7 @@ body {
 
 .annonces {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 20px;
 }
 
@@ -127,3 +127,22 @@ body {
     text-align: left;
     color: #333;
 }
+
+
+.container-info {
+    display: flex;
+    align-items: center;
+}
+
+
+.label-info {
+    margin-right: 10px;
+    font-size: 5x;
+}
+
+.info {
+    line-height: 1.5; 
+    font-style: italic; 
+    color: #888; 
+}
+
