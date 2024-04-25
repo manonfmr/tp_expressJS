@@ -66,7 +66,6 @@ baseDeDonnee.connect(function(err, next) {
 });
 
 app.get('/clearCookies.html', function(req, res){
-    console.log("test cookies")
     res.clearCookie('selected_annonce_nom');
     res.clearCookie('selected_annonce_lieu');
     res.clearCookie('selected_annonce_description');

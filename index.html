@@ -11,7 +11,7 @@
         <h3 class="titre_session">Votre login : {{login}}</h3>
 
         <form class="form" action="/logout" method="GET">
-            <button class="submit" type="submit">Déconnexion</button>
+            <button class="deconnexion-button" type="submit">Déconnexion</button>
         </form>
         
         <h1 class="titre">Liste des annonces</h1>
@@ -52,6 +52,7 @@
                     const response = JSON.parse(this.responseText);
                     if (response.success) {
                         const tabAnnonces = response.tabMesAnnonces;
+                        $scope.mesAnnonces =  [];
                         for (let i = 0; i < tabAnnonces.length; i++) {
                             $scope.mesAnnonces.push({ nom: tabAnnonces[i].nom, lieu: tabAnnonces[i].lieu, description: tabAnnonces[i].description, url_img: tabAnnonces[i].url_img });
                         }
