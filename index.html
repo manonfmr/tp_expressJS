@@ -11,38 +11,57 @@
         <h3 class="titre_session">{{login}}</h3>
         <h1 class="titre">Liste des annonces</h1>
         <div class="annonces">
-            <div ng-repeat="x in mesAnnonces" class="annonce">
-                <my-annonce label="A propos" on-click="onClickfunction(selectedValue)" x="x"></my-annonce>
+            <div ng-repeat="monAnnonce in mesAnnonces" class="annonce">
+                <my-annonce label="A propos" on-click="onClickfunction(selectedValueNom)" mon-annonce="monAnnonce"></my-annonce>
             </div>
         </div>
+
+        <button type="button" onclick="loadAnnonce()">Voir les annonces</button>
+        <div id="demo"> </div>
+
+
         <form class="form" action="/logout" method="GET">
             <button class="submit" type="submit">Déconnexion</button>
         </form>
     </div>
+    
     <script>
+
+        function loadAnnonce(){
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function(){
+                document.getElementById("test").innerHTML = this.responseText;
+            }
+            xhttp.open("POST", "./ajax.html", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send();
+        }
+
         var app = angular.module("myApp", ["ngCookies"]);
         
         app.controller("myCtrl", function($scope, $cookies){
+                       
             $scope.mesAnnonces=['musique', 'sport', 'concert', 'lecture'];
-            $scope.onClickfunction = function(selectedValue){
-                $cookies.put("selected_annonce", selectedValue);
+            $scope.onClickfunction = function(selectedValueNom){
+                $cookies.put("selected_annonce", selectedValueNom);
             };
         });
+
 
         app.directive('myAnnonce', function(){
             return {
                 restrict: 'E',
                 template: `
                     <div class="annonce-info">
-                        <h2 class="annonce-title">{{ x }}</h2>
-                        <img ng-src="{{ x + '.png' }}" class="annonce-image" alt="Image de l'annonce {{x}}">
+                        <h2 class="annonce-title">{{ monAnnonce }}</h2>
+                        <img ng-src="{{ monAnnonce + '.png' }}" class="annonce-image" alt="Image de l'annonce {{monAnnonce}}">
                     </div>
-                    <a class="link" ng-click="onClick({ selectedValue: x })" href="Apropos.html">{{ label }}</a>
+                    <a class="link" ng-click="onClick({ selectedValueNom: monAnnonce })" href="Apropos.html">{{ label }}</a>
                 `,
                 scope: {
                     label: '@',
                     onClick: '&',
-                    x: '=' 
+                    monAnnonce: '=' 
                 }
             };
         });
