@@ -8,7 +8,12 @@
 </head>
 <body ng-app="myApp" ng-controller="myCtrl">
     <div class="container">
-        <h3 class="titre_session">{{login}}</h3>
+        <h3 class="titre_session">Votre login : {{login}}</h3>
+
+        <form class="form" action="/logout" method="GET">
+            <button class="submit" type="submit">Déconnexion</button>
+        </form>
+        
         <h1 class="titre">Liste des annonces</h1>
 
         <button type="button" ng-click="loadAnnonce()">Voir les annonces</button>
@@ -16,14 +21,12 @@
       
         <div id="annonces-container" class="annonces">
             <div ng-repeat="monAnnonce in mesAnnonces" class="annonce">
-                <my-annonce label="A propos" on-click="onClickfunction(selectedValueNom)" mon-annonce-nom="monAnnonce.nom" mon-annonce-lieu="monAnnonce.lieu" mon-annonce-description="monAnnonce.description" mon-annonce-url="monAnnonce.url_img"></my-annonce>
+                <my-annonce label="A propos" on-click="onClickfunction(monAnnonce)" mon-annonce-nom="monAnnonce.nom" mon-annonce-lieu="monAnnonce.lieu" mon-annonce-url="monAnnonce.url_img"></my-annonce>
             </div>
 
         </div>
 
-        <form class="form" action="/logout" method="GET">
-            <button class="submit" type="submit">Déconnexion</button>
-        </form>
+        
     </div>
     
     
@@ -35,8 +38,11 @@
             $scope.login = login;
             $scope.mesAnnonces = []; 
 
-            $scope.onClickfunction = function(selectedValueNom){
-                $cookies.put("selected_annonce", selectedValueNom);
+            $scope.onClickfunction = function(monAnnonce){
+                $cookies.put("selected_annonce_nom", monAnnonce.nom);
+                $cookies.put("selected_annonce_lieu", monAnnonce.lieu);
+                $cookies.put("selected_annonce_description", monAnnonce.description);
+                $cookies.put("selected_annonce_url", monAnnonce.url_img);
             };
 
             $scope.loadAnnonce = function() {
@@ -73,10 +79,6 @@
                             <h3 class="label-info">Lieux :</h3>
                             <label class="info" for="lieu">{{monAnnonceLieu}}</label>
                         </div>
-                        <div class="container-info">
-                            <h3 class="label-info">Description :</h3>
-                            <div class="info" for="description">{{monAnnonceDescription}}</div>
-                        </div>
                         <img ng-src="{{ monAnnonceUrl }}" class="annonce-image" alt="Image de l'annonce {{monAnnonceNom}}">
                     </div>
                     <a class="link" ng-click="onClick({ selectedValueNom: monAnnonceNom })" href="Apropos.html">{{ label }}</a>
@@ -86,7 +88,6 @@
                     onClick: '&',
                     monAnnonceNom: '=',
                     monAnnonceLieu: '=',
-                    monAnnonceDescription: '=',
                     monAnnonceUrl: '='
                 }
             };

@@ -6,15 +6,17 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container_formulaire">
     <h1 class="titre">Connexion</h1>
     <form class="form" action="/index.html" method="POST">
         <label class="label" for="login">Login:</label>
         <input id= "login" class="input" type="text" name="login"><br>
         <input id = "session" class="submit" type="submit" value="Submit" onclick="loadSession()">
     </form>
-    <a class="link" href='Apropos.html'>A propos</a>
+    <a class="link" href='Apropos.html'>A propos</a><br>
+    <a href="./clearCookies.html" class="link">Supprimer les cookies du navigateur</a>
 </div>
+
 
 <script>
     
@@ -28,7 +30,6 @@
                 localStorage.setItem('login', response.login);
                 window.location.href = '/index.html';
             } else {
-                console.log('Échec de la connexion : Unauthorized');
                 window.location.href = '/connexion.html';
             }
         };

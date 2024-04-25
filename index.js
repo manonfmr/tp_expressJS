@@ -33,18 +33,17 @@ baseDeDonnee.connect(function(err, next) {
 
     app.post('/ajaxSession.html', function(req, res) {
         let login = req.body.login;
-        if (login) {
-            let sql = 'SELECT * FROM personne where login = ? ;';
+        
+        let sql = 'SELECT * FROM personne where login = ? ;';
             baseDeDonnee.query(sql, [login], function(err, resultat) {
                 if (err) next(err);
-                if (resultat.length === 0) {
+                if (resultat.length === 0 || login === "") {
                     res.json({ success: false, login: undefined });
                 } else {
                     req.session.login = login;
                     res.json({ success: true, login: login });
                 }
             });
-        }
     });
 
     app.post('/ajaxAnnonce.html', function(req, res) {
@@ -65,6 +64,15 @@ baseDeDonnee.connect(function(err, next) {
         });
     });
 });
+
+app.get('/clearCookies.html', function(req, res){
+    console.log("test cookies")
+    res.clearCookie('selected_annonce_nom');
+    res.clearCookie('selected_annonce_lieu');
+    res.clearCookie('selected_annonce_description');
+    res.clearCookie('selected_annonce_url');
+    res.sendFile(__dirname+'/connexion.html');
+})
 
 
 app.get('/index.html', function(req, res){

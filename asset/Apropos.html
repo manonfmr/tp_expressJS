@@ -9,17 +9,34 @@
     <body ng-app="myApp" ng-controller="myCtrl">
 
         <div class="container">
-            <h1 class="titre"> Annonce de {{selectedAnnonce}}</h1>
-            <div class="annonce-info">
-                <h2 class="annonce-info">{{selectedAnnonce}}</h2>
-                <img src="{{selectedAnnonce + '.png'}}" class="annonce-image" alt="Image de l'annonce {{selectedAnnonce}}">
+            <h1 class="titre" id="titre">{{monAnnonceNom ? 'A propos de l\'annonce: ' + monAnnonceNom : 'Aucune annonce enregistrée dans les cookies'}}</h1>
+            <div class="annonce-info" id="supAnnonces">
+                <div class="container-info">
+                    <h3 class="label-info">Lieux :</h3>
+                    <label class="info" for="lieu">{{monAnnonceLieu}}</label>
+                </div>
+                <div>
+                    <h3 class="label-info">Description :</h3>
+                    <div class="info" for="description">{{monAnnonceDescription}}</div>
+                </div>
+                <img ng-src="{{ monAnnonceUrl }}" class="annonce-image" alt="Image de l'annonce {{monAnnonceNom}}">
             </div>
         </div>
         
         <script>
             var app = angular.module("myApp", ["ngCookies"]);
             app.controller("myCtrl", function($scope, $cookies){
-                $scope.selectedAnnonce = $cookies.get('selected_annonce');
+                $scope.monAnnonceNom = $cookies.get('selected_annonce_nom');
+                $scope.monAnnonceLieu = $cookies.get('selected_annonce_lieu');
+                $scope.monAnnonceDescription = $cookies.get('selected_annonce_description');
+                $scope.monAnnonceUrl = $cookies.get('selected_annonce_url');
+                if($scope.monAnnonceNom === undefined){
+                    document.getElementById("titre").innerText = 'Aucune annonce enregistrée dans les cookies';
+                    var parentElement = document.getElementById("supAnnonces");
+                    while (parentElement.firstChild) {
+                        parentElement.removeChild(parentElement.firstChild);
+                    }
+                }
             })
         </script>
     </body>
