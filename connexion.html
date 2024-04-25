@@ -10,24 +10,34 @@
     <h1 class="titre">Connexion</h1>
     <form class="form" action="/index.html" method="POST">
         <label class="label" for="login">Login:</label>
-        <input class="input" type="text" name="login"><br>
-        <input id = "test" class="submit" type="submit" value="Submit" onclick="loadAnnonce()">
+        <input id= "login" class="input" type="text" name="login"><br>
+        <input id = "session" class="submit" type="submit" value="Submit" onclick="loadSession()">
     </form>
     <a class="link" href='Apropos.html'>A propos</a>
 </div>
 
 <script>
     
-    function loadAnnonce(){
+    function loadSession() {
         const xhttp = new XMLHttpRequest();
-        console.log("test")
-        xhttp.onload = function(){
-            document.getElementById("test").innerHTML = this.responseText;
-        }
-        xhttp.open("POST", "./index.html", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("login=Manon");
+        const loginValue = document.getElementById('login').value;
+
+        xhttp.onload = function() {
+            const response = JSON.parse(this.responseText);
+            if (response.success) {
+                localStorage.setItem('login', response.login);
+                window.location.href = '/index.html';
+            } else {
+                console.log('Échec de la connexion : Unauthorized');
+                window.location.href = '/connexion.html';
+            }
+        };
+
+        xhttp.open("POST", "./ajaxSession.html", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  
+        xhttp.send("login=" + loginValue);
     }
+
 
 </script>
 
