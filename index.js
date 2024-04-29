@@ -13,7 +13,7 @@ app.use(cookieParser());
 let baseDeDonnee = mysql.createConnection({
     host:'localhost',
     user: 'root',
-    password: '',
+    password: 'manon',
     database: 'bdnodejs'
 });
 
