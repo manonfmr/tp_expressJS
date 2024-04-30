@@ -67,7 +67,7 @@ baseDeDonnee.connect(function(err, next) {
 
 app.get('/createcookie.html', function(req, res){
     res.cookies('session', 'cookie créer')
-    res.sendFile(__dirname+'/connexion.html');
+    res.sendFile(__dirname+'/index.html');
 })
 
 
@@ -78,29 +78,29 @@ app.get('/clearCookies.html', function(req, res){
     res.clearCookie('selected_annonce_description');
     res.clearCookie('selected_annonce_url');
     res.clearCookie('session');
-    res.sendFile(__dirname+'/connexion.html');
-})
-
-
-app.get('/index.html', function(req, res){
     res.sendFile(__dirname+'/index.html');
 })
 
-app.get('/connexion.html', function(req, res){
-    res.sendFile(__dirname+'/connexion.html');
+
+app.get('/anonce.html', function(req, res){
+    res.sendFile(__dirname+'/anonce.html');
+})
+
+app.get('/index.html', function(req, res){
+    res.sendFile(__dirname+'/index.html');
 })
 
 app.use(express.static(path.join(__dirname, '/asset')));
 app.use(express.static(path.join(__dirname, '/asset/img')));
 
 app.get('/', function(req, res){
-    res.sendFile(__dirname+'/connexion.html');
+    res.sendFile(__dirname+'/index.html');
 })
 
 app.get('/logout', function(req, res){
     req.session.destroy(function(err) {
         if (err) next(err);
-        res.redirect('/connexion.html');
+        res.redirect('/index.html');
     });
 });
 

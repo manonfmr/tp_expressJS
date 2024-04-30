@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Annonce</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="container">
+        <h3 class="titre_session">Votre login : {{login}}</h3>
+
+        <form class="form" action="/logout" method="GET">
+            <button class="deconnexion-button" type="submit">Déconnexion</button>
+        </form>
+        
+        <h1 class="titre">Liste des annonces</h1>
+
+        <button type="button" ng-click="loadAnnonce()">Voir les annonces</button>
+
+      
+        <div id="annonces-container" class="annonces">
+            <div ng-repeat="monAnnonce in mesAnnonces" class="annonce">
+                <my-annonce label="A propos" on-click="onClickfunction(monAnnonce)" mon-annonce-nom="monAnnonce.nom" mon-annonce-lieu="monAnnonce.lieu" mon-annonce-url="monAnnonce.url_img"></my-annonce>
+            </div>
+
+        </div>
+
+        
+    </div>
+    
+    
+    <script>
+        var app = angular.module("myApp", ["ngCookies"]);
+        
+        app.controller("myCtrl", function($scope, $cookies){
+            const login = localStorage.getItem('login');
+            $scope.login = login;
+            $scope.mesAnnonces = []; 
+
+            $scope.onClickfunction = function(monAnnonce){
+                $cookies.put("selected_annonce_nom", monAnnonce.nom);
+                $cookies.put("selected_annonce_lieu", monAnnonce.lieu);
+                $cookies.put("selected_annonce_description", monAnnonce.description);
+                $cookies.put("selected_annonce_url", monAnnonce.url_img);
+            };
+
+            $scope.loadAnnonce = function() {
+                const xhttp = new XMLHttpRequest();
+
+                xhttp.onload = function() {
+                    const response = JSON.parse(this.responseText);
+                    if (response.success) {
+                        const tabAnnonces = response.tabMesAnnonces;
+                        $scope.mesAnnonces =  [];
+                        for (let i = 0; i < tabAnnonces.length; i++) {
+                            $scope.mesAnnonces.push({ nom: tabAnnonces[i].nom, lieu: tabAnnonces[i].lieu, description: tabAnnonces[i].description, url_img: tabAnnonces[i].url_img });
+                        }
+                    } else {
+                        console.log('Erreur lors du chargement des annonces');
+                    }
+                    
+                };
+
+                xhttp.open("POST", "./ajaxAnnonce.html", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send();
+            };
+            
+            $scope.loadAnnonce();
+        });
+
+        app.directive('myAnnonce', function(){
+            return {
+                restrict: 'E',
+                template: `
+                    <div class="annonce-info">
+                        <h2 class="annonce-title">{{ monAnnonceNom }}</h2>
+                        <div class="container-info">
+                            <h3 class="label-info">Lieux :</h3>
+                            <label class="info" for="lieu">{{monAnnonceLieu}}</label>
+                        </div>
+                        <img ng-src="{{ monAnnonceUrl }}" class="annonce-image" alt="Image de l'annonce {{monAnnonceNom}}">
+                    </div>
+                    <a class="link" ng-click="onClick({ selectedValueNom: monAnnonceNom })" href="Apropos.html">{{ label }}</a>
+                `,
+                scope: {
+                    label: '@',
+                    onClick: '&',
+                    monAnnonceNom: '=',
+                    monAnnonceLieu: '=',
+                    monAnnonceUrl: '='
+                }
+            };
+        });
+    </script>
+</body>
+</html>
