@@ -4,23 +4,44 @@
     <meta charset="UTF-8">
     <title>Cookie</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-cookies.js"></script>
 </head>
 <body ng-app="myApp" ng-controller="myCtrl">
 
     <div class="container">
-        <h1 class="titre" id="titre">Mes cookies</h1>
-        <div>
-            {{cookie}}
-        </div>
+        <h1 class="titre" id="titre">Cookies présents dans le navigateur :</h1>
+        <ul id="cookieList" class="cookie-list"></ul>
 
         <a href="./clearCookies.html" class="link">Supprimer les cookies du navigateur</a>
     </div>
     
     <script>
-        var app = angular.module("myApp", ["ngCookies"]);
-        app.controller("myCtrl", function($scope, $cookies){
-            $scope.$cookies = $cookies.get('selected_annonce_nom');
-        })
+        function getCookies() {
+            var cookies = document.cookie.split(';');
+            var cookieList = document.getElementById('cookieList');
+            console.log(cookies)
+            if (cookies.length === 1 && cookies[0].trim() === ''){
+                var cookieItem = document.createElement('li');
+                cookieItem.classList.add('cookie-item');
+                cookieItem.textContent = 'Aucuns cookies dans votre navigateur';
+                cookieList.appendChild(cookieItem);
+            }
+            else{
+                cookies.forEach(function(cookie) {
+                    var parts = cookie.split('=');
+                    var cookieName = parts[0].trim();
+                    var cookieValue = decodeURIComponent(parts[1]);
+                    
+                    var cookieItem = document.createElement('li');
+                    cookieItem.classList.add('cookie-item');
+                    cookieItem.textContent = cookieName + ': ' + cookieValue;
+                    cookieList.appendChild(cookieItem);
+                });
+            }
+           
+        }
+        window.onload = getCookies;
     </script>
 </body>
 </html>

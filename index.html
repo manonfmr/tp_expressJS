@@ -30,7 +30,8 @@
             const response = JSON.parse(this.responseText);
             if (response.success) {
                 localStorage.setItem('login', response.login);
-                window.location.href = '/anonce.html';
+                console.log("test")
+                window.location.href = '/annonce.html';
             } else {
                 window.location.href = '/index.html';
             }

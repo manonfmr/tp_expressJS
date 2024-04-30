@@ -10,6 +10,10 @@ let cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
 
+
+app.use(express.static(path.join(__dirname, '/asset')));
+app.use(express.static(path.join(__dirname, '/asset/img')));
+
 let baseDeDonnee = mysql.createConnection({
     host:'localhost',
     user: 'root',
@@ -29,14 +33,18 @@ app.use(sessions({
 app.use(express.urlencoded({extended: true}));
 
 baseDeDonnee.connect(function(err, next) {
-    if (err) next(err);
+    if (err){
+        return next(err);
+    } 
 
     app.post('/ajaxSession.html', function(req, res) {
         let login = req.body.login;
         
         let sql = 'SELECT * FROM personne where login = ? ;';
             baseDeDonnee.query(sql, [login], function(err, resultat) {
-                if (err) next(err);
+                if (err){
+                    return next(err);
+                } 
                 if (resultat.length === 0 || login === "") {
                     res.json({ success: false, login: undefined });
                 } else {
@@ -51,7 +59,9 @@ baseDeDonnee.connect(function(err, next) {
         let sql = 'SELECT * FROM annonce';
         let tabMesAnnonces = [];
         baseDeDonnee.query(sql, function(err, resultat) {
-            if (err) next(err);
+            if (err){
+                return next(err);
+            } 
             if (resultat.length === 0) {
                 res.json({ success: false });
             } else {
@@ -66,8 +76,8 @@ baseDeDonnee.connect(function(err, next) {
 });
 
 app.get('/createcookie.html', function(req, res){
-    res.cookies('session', 'cookie créer')
-    res.sendFile(__dirname+'/index.html');
+    res.cookie('session', 'cookie créer')
+    res.send('Cookie créer');
 })
 
 
@@ -82,16 +92,13 @@ app.get('/clearCookies.html', function(req, res){
 })
 
 
-app.get('/anonce.html', function(req, res){
-    res.sendFile(__dirname+'/anonce.html');
+app.get('/annonce.html', function(req, res){
+    res.sendFile(__dirname+'/annonce.html');
 })
 
 app.get('/index.html', function(req, res){
     res.sendFile(__dirname+'/index.html');
 })
-
-app.use(express.static(path.join(__dirname, '/asset')));
-app.use(express.static(path.join(__dirname, '/asset/img')));
 
 app.get('/', function(req, res){
     res.sendFile(__dirname+'/index.html');
@@ -99,7 +106,9 @@ app.get('/', function(req, res){
 
 app.get('/logout', function(req, res){
     req.session.destroy(function(err) {
-        if (err) next(err);
+        if (err){
+            return next(err);
+        } 
         res.redirect('/index.html');
     });
 });
