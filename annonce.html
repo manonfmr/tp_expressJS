@@ -15,16 +15,6 @@
         </form>
         
         <h1 class="titre">Liste des annonces</h1>
-
-        <label class="annonce-label" for="choixAnnonce">Choisissez un type d'annonce:</label>
-        <select class="annonce-select" id="choixAnnonce" ng-model="selectedAnnonce">
-            <option value="Musique">Musique</option>
-            <option value="Sport">Sport</option>
-            <option value="Lecture">Lecture</option>
-            <option value="Animaux">Animaux</option>
-            <option value="toutes">Toutes les annonces</option>
-        </select>
-        <button type="button" class="submit" id="validerChoix" ng-click="loadAnnonce()">Double cliqué pour voir les annonces</button>
   
         <div id="annonces-container" class="annonces">
             <div ng-repeat="monAnnonce in mesAnnonces" class="annonce">
@@ -50,39 +40,24 @@
                 $cookies.put("selected_annonce_url", monAnnonce.url_img);
             };
 
-
-            $scope.loadAnnonce = function() {
-                const selectedAnnonce = $scope.selectedAnnonce; 
-                const xhttp = new XMLHttpRequest();
-                xhttp.onload = function() {
-                    const response = JSON.parse(this.responseText);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
                     if (response.success) {
-                        const tabAnnonces = response.tabMesAnnonces;
-                        $scope.mesAnnonces =  [];
-                        if (selectedAnnonce === 'toutes'){
-                            for (let i = 0; i < tabAnnonces.length; i++) {
-                                $scope.mesAnnonces.push({ id: tabAnnonces[i].id ,nom: tabAnnonces[i].nom, lieu: tabAnnonces[i].lieu, description: tabAnnonces[i].description, url_img: tabAnnonces[i].url_img });                      
-                            }
-                        }
-                        else{
-                            for (let i = 0; i < tabAnnonces.length; i++) {
-                                if (selectedAnnonce === tabAnnonces[i].nom){
-                                    $scope.mesAnnonces.push({ id: tabAnnonces[i].id ,nom: tabAnnonces[i].nom, lieu: tabAnnonces[i].lieu, description: tabAnnonces[i].description, url_img: tabAnnonces[i].url_img });
-                                }                            
-                            }
-                        }  
+                        $scope.$apply(function() {
+                            $scope.mesAnnonces = response.tabMesAnnonces;
+                        });
                     } else {
-                        console.log('Erreur lors du chargement des annonces');
-                    }    
-                };
-
-                xhttp.open("POST", "./ajaxAnnonce.html", true);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send();
+                        console.log('Erreur lors de la récupération des annonces');
+                    }
+                }
             };
+            console.log(" scope " + $scope.mesAnnonces)
+            xhttp.open("POST", "/ajaxAnnonce.html", true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send();
 
-            
-            $scope.loadAnnonce();
         });
 
         app.directive('myAnnonce', function(){
