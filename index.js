@@ -1,11 +1,8 @@
 const express = require("express");
 const app = express();
-const url = require("url");
-const port = 8080;
 const path = require('path');
 let mysql = require('mysql');
 let sessions = require('express-session');
-let fileSystem = require('fs');
 let cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
@@ -32,9 +29,10 @@ app.use(sessions({
 
 app.use(express.urlencoded({extended: true}));
 
-baseDeDonnee.connect(function(err, next) {
+baseDeDonnee.connect(function(err) {
     if (err){
-        return next(err);
+        console.log("erreur base données : "+ err);
+        return;
     } 
 
     app.post('/ajaxSession.html', function(req, res) {
@@ -43,7 +41,8 @@ baseDeDonnee.connect(function(err, next) {
         let sql = 'SELECT * FROM personne where login = ? ;';
             baseDeDonnee.query(sql, [login], function(err, resultat) {
                 if (err){
-                    return next(err);
+                    console.log("erreur chargement données : "+ err);
+                    return;
                 } 
                 if (resultat.length === 0 || login === "") {
                     res.json({ success: false, login: undefined });
@@ -60,7 +59,8 @@ baseDeDonnee.connect(function(err, next) {
         let tabMesAnnonces = [];
         baseDeDonnee.query(sql, function(err, resultat) {
             if (err){
-                return next(err);
+                console.log("erreur chargement données : "+ err);
+                return;
             } 
             if (resultat.length === 0) {
                 res.json({ success: false });
@@ -107,13 +107,14 @@ app.get('/', function(req, res){
 app.get('/logout', function(req, res){
     req.session.destroy(function(err) {
         if (err){
-            return next(err);
+            console.log("erreur déconnexion : "+ err);
+            return;
         } 
         res.redirect('/index.html');
     });
 });
 
-app.use((err, req, res, next) => {
+app.use((err, res) => {
     console.error("Erreur :", err);
     res.status(500).send("Une erreur est survenue.");
 });
