@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+
+    <div class="container">
+        <h1 class="titre" id="titre">Mes cookies</h1>
+        <div>
+            {{cookie}}
+        </div>
+
+        <a href="./clearCookies.html" class="link">Supprimer les cookies du navigateur</a>
+    </div>
+    
+    <script>
+        var app = angular.module("myApp", ["ngCookies"]);
+        app.controller("myCtrl", function($scope, $cookies){
+            $scope.$cookies = $cookies.get('selected_annonce_nom');
+        })
+    </script>
+</body>
+</html>

@@ -13,8 +13,8 @@ app.use(cookieParser());
 let baseDeDonnee = mysql.createConnection({
     host:'localhost',
     user: 'root',
-    password: 'manon',
-    database: 'bdnodejs'
+    password: '',
+    database: 'projetWeb'
 });
 
 const twoHours = 1000*60*60*1;// sessions de 1h
@@ -65,11 +65,19 @@ baseDeDonnee.connect(function(err, next) {
     });
 });
 
+app.get('/createcookie.html', function(req, res){
+    res.cookies('session', 'cookie créer')
+    res.sendFile(__dirname+'/connexion.html');
+})
+
+
+
 app.get('/clearCookies.html', function(req, res){
     res.clearCookie('selected_annonce_nom');
     res.clearCookie('selected_annonce_lieu');
     res.clearCookie('selected_annonce_description');
     res.clearCookie('selected_annonce_url');
+    res.clearCookie('session');
     res.sendFile(__dirname+'/connexion.html');
 })
 

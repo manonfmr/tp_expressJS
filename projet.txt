@@ -1,0 +1,21 @@
+Vous devez réaliser le site dont l'architecture est proposée dans le fichier Pdf.
+PAGE index.html
+	Titre connexion.
+	Identification du login, acces BDD par un bouton.
+	Si login OK, création d'une session.
+	Création d'un cookie perseptible dans la parge cookie.html
+PAGE apropos.html
+	Page en routage statique dans un répertoire /HTML
+PAGE cookie.html
+	Affichage du cookie initié dans la page index.html.
+	Possibilité de destruction du cookie par un bouton.
+PAGE annonces.html
+	Accès à la page si exitance de session. Affichage du login.
+	Possibilité de supression de la session par un bouton deconnexion.
+	Accès BDD pour récupération des annonces.
+	Affichage des annonces par le biais d'un teplate AngularJS.
+	Accès à la page apropos.html
+FICHIER style.css
+	Contient une style css minial pour la balise H1.
+	Page en routage statique dans un répertoire /CSS
+	Style appliqué à tous les fichiers du projet.
