@@ -141,3 +141,31 @@ body {
     padding: 10px;
     border-radius: 5px;
 }
+
+/* Style pour le label */
+.annonce-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Style pour la liste déroulante */
+.annonce-select {
+    width: 200px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Style pour les options de la liste déroulante */
+.annonce-select option {
+    font-size: 14px;
+    padding: 8px;
+    background-color: #fff;
+    color: #555;
+}

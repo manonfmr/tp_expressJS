@@ -66,7 +66,7 @@ baseDeDonnee.connect(function(err, next) {
                 res.json({ success: false });
             } else {
                 for (let i = 0; i < resultat.length; i++) {
-                    tabMesAnnonces.push({ nom: resultat[i].nom, lieu: resultat[i].lieu, description: resultat[i].description, url_img: resultat[i].url_img });
+                    tabMesAnnonces.push({id: resultat[i].id, nom: resultat[i].nom, lieu: resultat[i].lieu, description: resultat[i].description, url_img: resultat[i].url_img });
                 }
                 res.json({ success: true, tabMesAnnonces: tabMesAnnonces});
             }
