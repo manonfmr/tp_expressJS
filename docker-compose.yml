@@ -1,4 +1,5 @@
 version: '3.2'
+
 volumes:
   mysql-data:
 
@@ -11,20 +12,21 @@ services:
       DATABASE_PORT: 3306
       DATABASE_USERNAME: "user"
       DATABASE_PASSWORD: "password"
-      DATABASE_NAME: "database"
+      DATABASE_NAME: "projetWeb"  
     depends_on:
       - mysql
     ports:
       - 3000:3000
 
   mysql:
-    image: mariadb:10.5
+    image: mariadb
+    container_name: monmysql2
     environment:
       MYSQL_ROOT_PASSWORD: "manon"
-      MYSQL_DATABASE: "database"
+      MYSQL_DATABASE: "projetWeb"  
       MYSQL_USER: "user"
       MYSQL_PASSWORD: "password"
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
-      - 3306:3306
+      - "3306:3306"
