@@ -12,7 +12,7 @@ services:
     restart: always
 
   mysql:
-    image: mariadb
+    image: mysql:5.7
     container_name: monmysql
     environment:
       MYSQL_ROOT_PASSWORD: "manon"
