@@ -7,7 +7,6 @@ let cookieParser = require("cookie-parser");
 
 const https = require('https');
 const fs = require('fs');
-const path = require('path');
 // Chemins vers votre clé privée et certificat
 const privateKey = fs.readFileSync(path.join(__dirname, 'certs', 'key.pem'), 'utf8');
 const certificate = fs.readFileSync(path.join(__dirname, 'certs', 'cert.pem'), 'utf8');
