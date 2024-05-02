@@ -38,7 +38,9 @@ baseDeDonnee.connect(function(err) {
 
     app.post('/ajaxSession.html', function(req, res) {
         let login = req.body.login;
-        
+        if (login === ""){
+            res.redirect('/index.html');
+        }
         let sql = 'SELECT * FROM personne where login = ? ;';
         baseDeDonnee.query(sql, [login], function(err, resultat) {
             if (err) {
@@ -98,7 +100,12 @@ app.get('/annonce.html', function(req, res){
 })
 
 app.get('/index.html', function(req, res){
-    res.sendFile(__dirname+'/index.html');
+    if (req.session.login != undefined){
+        res.sendFile(__dirname+'/annonce.html');
+    }
+    else{
+        res.sendFile(__dirname+'/index.html');
+    }
 })
 
 app.get('/', function(req, res){
