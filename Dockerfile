@@ -26,6 +26,6 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize
 
 RUN ls -l
 
-CMD ["dockerize", "-wait", "tcp://db:3306", "-timeout", "60s", "node", "index.js"]
+CMD ["dockerize", "-wait", "tcp://db:3306", "-timeout", "120s", "node", "index.js"]
 
  
