@@ -20,7 +20,7 @@ services:
 
   mysql:
     image: mariadb
-    container_name: monmysql2
+    container_name: monmysql
     environment:
       MYSQL_ROOT_PASSWORD: "manon"
       MYSQL_DATABASE: "projetWeb"  # Nom de la base de données à créer
