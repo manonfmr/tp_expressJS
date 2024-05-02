@@ -24,8 +24,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "manon"
       MYSQL_DATABASE: "projetWeb"  # Nom de la base de données à créer
-      MYSQL_USER: "user"
-      MYSQL_PASSWORD: "password"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "manon"
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
