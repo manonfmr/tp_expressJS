@@ -10,7 +10,7 @@
     <div class="container">
         <h3 class="titre_session">Votre login : {{login}}</h3>
 
-        <form class="form" action="/logout" method="GET">
+        <form class="form" action="/logout" method="POST">
             <button class="deconnexion-button" type="submit">Déconnexion</button>
         </form>
         
@@ -28,8 +28,7 @@
         var app = angular.module("myApp", ["ngCookies"]);
         
         app.controller("myCtrl", function($scope, $cookies){
-            
-            const login = localStorage.getItem('login');
+            const login = $cookies.get('login');
             $scope.login = login;
             $scope.mesAnnonces = []; 
 
