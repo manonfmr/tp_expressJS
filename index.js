@@ -7,7 +7,6 @@ let cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
 
-
 app.use(express.static(path.join(__dirname, '/asset')));
 app.use(express.static(path.join(__dirname, '/asset/img')));
 
@@ -19,7 +18,7 @@ let baseDeDonnee = mysql.createConnection({
     database: 'projetWeb'
 });
 
-const twoHours = 1000*60*60*1;// sessions de 1h
+const twoHours = 1000*60*60*1; // sessions de 1h
 
 app.use(sessions({
     secret: '123456789',
@@ -31,47 +30,51 @@ app.use(sessions({
 app.use(express.urlencoded({extended: true}));
 
 baseDeDonnee.connect(function(err) {
-    if (err){
-        console.log("erreur base données : "+ err);
+    if (err) {
+        console.error("Erreur lors de la connexion à la base de données : "+ err);
         return;
-    } 
+    }
+
+    console.log("Connexion à la base de données réussie.");
 
     app.post('/ajaxSession.html', function(req, res) {
         let login = req.body.login;
         
         let sql = 'SELECT * FROM personne where login = ? ;';
-            baseDeDonnee.query(sql, [login], function(err, resultat) {
-                if (err){
-                    console.log("erreur chargement données : "+ err);
-                    return;
-                } 
-                if (resultat.length === 0 || login === "") {
-                    res.json({ success: false, login: undefined });
-                } else {
-                    req.session.login = login;
-                    res.json({ success: true, login: login });
-                }
-            });
+        baseDeDonnee.query(sql, [login], function(err, resultat) {
+            if (err) {
+                console.error("Erreur lors du chargement des données : "+ err);
+                res.status(500).json({ success: false, error: "Erreur lors du chargement des données." });
+                return;
+            }
+            if (resultat.length === 0 || login === "") {
+                res.json({ success: false, login: undefined });
+            } else {
+                req.session.login = login;
+                console.log("success to log")
+                res.json({ success: true, login: login });
+            }
+        });
     });
 
     app.post('/ajaxAnnonce.html', function(req, res) {
-        if (err) console.log("erreur ajaxAnnonce.html");
         let sql = 'SELECT * FROM annonce';
         let tabMesAnnonces = [];
         baseDeDonnee.query(sql, function(err, resultat) {
-            if (err){
-                console.log("erreur chargement données : "+ err);
+            if (err) {
+                console.error("Erreur lors du chargement des données : "+ err);
+                res.status(500).json({ success: false, error: "Erreur lors du chargement des données." });
                 return;
-            } 
+            }
             if (resultat.length === 0) {
                 res.json({ success: false });
             } else {
                 for (let i = 0; i < resultat.length; i++) {
                     tabMesAnnonces.push({id: resultat[i].id, nom: resultat[i].nom, lieu: resultat[i].lieu, description: resultat[i].description, url_img: resultat[i].url_img });
                 }
-                res.json({ success: true, tabMesAnnonces: tabMesAnnonces});
+                console.log("success to annonce bdd")
+                res.json({ success: true, tabMesAnnonces: tabMesAnnonces });
             }
-
         });
     });
 });
@@ -80,8 +83,6 @@ app.get('/createcookie.html', function(req, res){
     res.cookie('session', 'cookie créer')
     res.send('Cookie créer');
 })
-
-
 
 app.get('/clearCookies.html', function(req, res){
     res.clearCookie('selected_annonce_nom');
@@ -92,8 +93,8 @@ app.get('/clearCookies.html', function(req, res){
     res.sendFile(__dirname+'/index.html');
 })
 
-
 app.get('/annonce.html', function(req, res){
+    console.log("success to go to annonce")
     res.sendFile(__dirname+'/annonce.html');
 })
 
@@ -107,19 +108,21 @@ app.get('/', function(req, res){
 
 app.get('/logout', function(req, res){
     req.session.destroy(function(err) {
-        if (err){
-            console.log("erreur déconnexion : "+ err);
+        if (err) {
+            console.error("Erreur lors de la déconnexion : "+ err);
+            res.status(500).send("Une erreur est survenue.");
             return;
         } 
         res.redirect('/index.html');
     });
 });
 
-app.use((err, res) => {
-    console.error("Erreur :", err);
+// Middleware pour gérer les erreurs
+app.use((err, req, res, next) => {
+    console.error("Erreur :"+ err);
     res.status(500).send("Une erreur est survenue.");
 });
 
 app.listen(8080, function(){
-    console.log("ecoute sur le port 8080");
-})
+    console.log("Écoute sur le port 8080");
+});
