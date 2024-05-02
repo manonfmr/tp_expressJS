@@ -126,7 +126,7 @@ app.get('/logout', function(req, res){
             res.status(500).send("Une erreur est survenue.");
             return;
         } 
-        res.redirect('/index.html');
+        res.redirect('/');
     });
 });
 
