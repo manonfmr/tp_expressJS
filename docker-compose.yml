@@ -1,27 +1,28 @@
-version: '3.9'
-services:
-  node:
-    container_name: node_app
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./app:/app
-    depends_on:
-      - mysql
+version: '3'
 
-  mysql:
-    container_name: mysql_db
-    image: mysql:latest
+services:
+  monnode:
+    container_name: monnode-lerman
+    image: monnode
+    ports:
+      - "8082:8080"
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: your_password
-      MYSQL_DATABASE: your_database
-      MYSQL_USER: your_username
-      MYSQL_PASSWORD: your_password
+
+  monmysql:
+    container_name: monmysql
+    image: mariadb
     ports:
       - "3306:3306"
-    volumes:
-      - ./mysql_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: manon
+
+  phpmyadmin:
+    container_name: phpmyadmin_container
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    restart: always
+    environment:
+      PMA_HOST: monmysql
+      MYSQL_ROOT_PASSWORD: manon
