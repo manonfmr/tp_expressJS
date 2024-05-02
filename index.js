@@ -119,7 +119,7 @@ app.get('/logout', function(req, res){
 
 // Middleware pour gérer les erreurs
 app.use((err, req, res, next) => {
-    console.error("Erreur :"+ err);
+    console.error("Erreur :");
     res.status(500).send("Une erreur est survenue.");
 });
 
