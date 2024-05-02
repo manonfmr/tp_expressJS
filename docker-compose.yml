@@ -1,28 +1,30 @@
-version: '3'
+version: '3.2'
+volumes:
+  mysql-data:
 
 services:
-  monnode:
-    container_name: monnode-lerman
-    image: monnode
-    ports:
-      - "8082:8080"
-    restart: always
-
-  monmysql:
-    container_name: monmysql
-    image: mariadb
-    ports:
-      - "3306:3306"
-    restart: always
+  node:
+    build: .
     environment:
-      MYSQL_ROOT_PASSWORD: manon
-
-  phpmyadmin:
-    container_name: phpmyadmin_container
-    image: phpmyadmin/phpmyadmin
+      PORT: 3000
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
+      DATABASE_USERNAME: "user"
+      DATABASE_PASSWORD: "password"
+      DATABASE_NAME: "database"
+    depends_on:
+      - mysql
     ports:
-      - "8081:80"
-    restart: always
+      - 3000:3000
+
+  mysql:
+    image: mariadb:10.5
     environment:
-      PMA_HOST: monmysql
-      MYSQL_ROOT_PASSWORD: manon
+      MYSQL_ROOT_PASSWORD: "manon"
+      MYSQL_DATABASE: "database"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
