@@ -30,7 +30,6 @@
             const response = JSON.parse(this.responseText);
             if (response.success) {
                 localStorage.setItem('login', response.login);
-                $cookies.put("login", response.login);
                 window.location.href = '/annonce.html';
             } else {
                 window.location.href = '/index.html';

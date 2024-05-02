@@ -119,7 +119,7 @@ app.get('/', function(req, res){
     res.sendFile(__dirname+'/index.html');
 })
 
-app.post('/logout', function(req, res){
+app.get('/logout', function(req, res){
     req.session.destroy(function(err) {
         if (err) {
             console.error("Erreur lors de la déconnexion : ");
