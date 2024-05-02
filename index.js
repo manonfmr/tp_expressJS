@@ -12,7 +12,8 @@ app.use(express.static(path.join(__dirname, '/asset')));
 app.use(express.static(path.join(__dirname, '/asset/img')));
 
 let baseDeDonnee = mysql.createConnection({
-    host:'localhost',
+    host:'lerman.3il-rodez-projets.site',
+    port:'3306',
     user: 'root',
     password: 'manon',
     database: 'projetWeb'
