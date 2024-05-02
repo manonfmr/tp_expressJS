@@ -5,6 +5,15 @@ let mysql = require('mysql');
 let sessions = require('express-session');
 let cookieParser = require("cookie-parser");
 
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+// Chemins vers votre clé privée et certificat
+const privateKey = fs.readFileSync(path.join(__dirname, 'certs', 'key.pem'), 'utf8');
+const certificate = fs.readFileSync(path.join(__dirname, 'certs', 'cert.pem'), 'utf8');
+
+const credentials = { key: privateKey, cert: certificate };
+
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '/asset')));
@@ -129,6 +138,9 @@ app.get('/logout', function(req, res){
 //     res.status(500).send("Une erreur est survenue.");
 // });
 
-app.listen(3000, function(){
-    console.log("Écoute sur le port 8080");
+// Création du serveur HTTPS
+const httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(3000, () => {
+  console.log('HTTPS Server running on port 3000');
 });
