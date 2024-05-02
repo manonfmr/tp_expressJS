@@ -31,7 +31,7 @@ app.use(express.urlencoded({extended: true}));
 
 baseDeDonnee.connect(function(err) {
     if (err) {
-        console.error("Erreur lors de la connexion à la base de données : "+ err);
+        console.error("Erreur lors de la connexion à la base de données : ");
         return;
     }
 
@@ -43,7 +43,7 @@ baseDeDonnee.connect(function(err) {
         let sql = 'SELECT * FROM personne where login = ? ;';
         baseDeDonnee.query(sql, [login], function(err, resultat) {
             if (err) {
-                console.error("Erreur lors du chargement des données : "+ err);
+                console.error("Erreur lors du chargement des données : ");
                 res.status(500).json({ success: false, error: "Erreur lors du chargement des données." });
                 return;
             }
@@ -62,7 +62,7 @@ baseDeDonnee.connect(function(err) {
         let tabMesAnnonces = [];
         baseDeDonnee.query(sql, function(err, resultat) {
             if (err) {
-                console.error("Erreur lors du chargement des données : "+ err);
+                console.error("Erreur lors du chargement des données : ");
                 res.status(500).json({ success: false, error: "Erreur lors du chargement des données." });
                 return;
             }
@@ -109,7 +109,7 @@ app.get('/', function(req, res){
 app.get('/logout', function(req, res){
     req.session.destroy(function(err) {
         if (err) {
-            console.error("Erreur lors de la déconnexion : "+ err);
+            console.error("Erreur lors de la déconnexion : ");
             res.status(500).send("Une erreur est survenue.");
             return;
         } 
@@ -118,10 +118,10 @@ app.get('/logout', function(req, res){
 });
 
 // Middleware pour gérer les erreurs
-app.use((err, req, res, next) => {
-    console.error("Erreur :");
-    res.status(500).send("Une erreur est survenue.");
-});
+// app.use((err, req, res, next) => {
+//     console.error("Erreur :");
+//     res.status(500).send("Une erreur est survenue.");
+// });
 
 app.listen(8080, function(){
     console.log("Écoute sur le port 8080");
